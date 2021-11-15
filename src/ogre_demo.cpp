@@ -12,47 +12,46 @@ bool MyTestApp::keyPressed(OgreBites::KeyboardEvent const &evt) {
     return false; // key not processed
 }
 
-void MyTestApp::setup(void) {
-  // do not forget to call the base first
+void MyTestApp::setup() {
   OgreBites::ApplicationContext::setup();
+  addInputListener(this); // register for input events
 
-  // register for input events
-  addInputListener(this);
-
-  // get a pointer to the already created root
-  Ogre::Root *root = getRoot();
-  Ogre::SceneManager *scnMgr = root->createSceneManager();
+  SceneManager *scene = getRoot()->createSceneManager();
+  scene->setAmbientLight(ColourValue{0.5, 0.5, 0.5});
 
   // register our scene with the RTSS
-  Ogre::RTShader::ShaderGenerator *shadergen =
-      Ogre::RTShader::ShaderGenerator::getSingletonPtr();
-  shadergen->addSceneManager(scnMgr);
+  RTShader::ShaderGenerator *shadergen =
+      RTShader::ShaderGenerator::getSingletonPtr();
+  shadergen->addSceneManager(scene);
+
+  SceneNode *root_node = scene->getRootSceneNode();
 
   // without light we would just get a black screen
-  Ogre::Light *light = scnMgr->createLight("MainLight");
-  Ogre::SceneNode *lightNode =
-      scnMgr->getRootSceneNode()->createChildSceneNode();
+  Light *light = scene->createLight("MainLight");
+  SceneNode *light_node = root_node->createChildSceneNode();
+  light_node->setPosition(20, 80, 50);
+  light_node->attachObject(light);
 
-  // Set light position
-  lightNode->setPosition(0, 10, 15);
-  lightNode->attachObject(light);
+  // create camera so we can observe scene
+  Camera *camera = scene->createCamera("MainCamera");
+  camera->setNearClipDistance(5); // specific to this sample
+  camera->setAutoAspectRatio(true);
+  SceneNode *camera_node = root_node->createChildSceneNode();
+  camera_node->setPosition(0, 0, 250);
+  camera_node->lookAt(Vector3{0, 0, -1}, Node::TS_PARENT);
+  camera_node->attachObject(camera);
 
-  // also need to tell where we are
-  Ogre::SceneNode *camNode = scnMgr->getRootSceneNode()->createChildSceneNode();
-  camNode->setPosition(0, 0, 15);
-  camNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
+  getRenderWindow()->addViewport(camera); // render into the main window
 
-  // create the camera
-  Ogre::Camera *cam = scnMgr->createCamera("myCam");
-  cam->setNearClipDistance(5); // specific to this sample
-  cam->setAutoAspectRatio(true);
-  camNode->attachObject(cam);
+  // Create entities [ogre keeps only one copy of mesh in memory, so two objects
+  // of same mesh ok]
+  Entity *obj_1 = scene->createEntity("ogrehead.mesh");
+  Entity *obj_2 = scene->createEntity("ogrehead.mesh");
 
-  // and tell it to render into the main window
-  getRenderWindow()->addViewport(cam);
+  // Attace entities to scene
+  SceneNode *node_1 = root_node->createChildSceneNode();
+  SceneNode *node_2 = root_node->createChildSceneNode(Vector3(84, 48, 0));
 
-  // finally something to render
-  Ogre::Entity *ent = scnMgr->createEntity("Sinbad.mesh");
-  Ogre::SceneNode *node = scnMgr->getRootSceneNode()->createChildSceneNode();
-  node->attachObject(ent);
+  node_1->attachObject(obj_1);
+  node_2->attachObject(obj_2);
 }
