@@ -5,6 +5,9 @@
 
 using namespace Ogre;
 
+// ApplicationContext, -> Use inbuild simple gui system
+// Inputlistener -> Handle inputs 
+
 class MyTestApp
 	: public OgreBites::ApplicationContext, public OgreBites::InputListener
 {

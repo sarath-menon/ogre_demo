@@ -1,54 +1,58 @@
 #include "ogre_demo.h"
 
-MyTestApp::MyTestApp()
-	: OgreBites::ApplicationContext{"OgreTutorialApp"}
-{}
+// Specify app name
+MyTestApp::MyTestApp() : OgreBites::ApplicationContext{"OgreTutorialApp"} {}
 
-bool MyTestApp::keyPressed(OgreBites::KeyboardEvent const & evt)
-{
-	if (evt.keysym.sym == OgreBites::SDLK_ESCAPE)
-	{
-		getRoot()->queueEndRendering();
-		return true;
-	}
-	else
-		return false;  // key not processed
+// Close window when esc key pressed
+bool MyTestApp::keyPressed(OgreBites::KeyboardEvent const &evt) {
+  if (evt.keysym.sym == OgreBites::SDLK_ESCAPE) {
+    getRoot()->queueEndRendering();
+    return true;
+  } else
+    return false; // key not processed
 }
 
-void MyTestApp::setup()
-{
-	OgreBites::ApplicationContext::setup();
-	addInputListener(this);  // register for input events
+void MyTestApp::setup(void) {
+  // do not forget to call the base first
+  OgreBites::ApplicationContext::setup();
 
-	SceneManager * scene = getRoot()->createSceneManager();
-	scene->setAmbientLight(ColourValue{0.5, 0.5, 0.5});
+  // register for input events
+  addInputListener(this);
 
-	// register our scene with the RTSS
-	RTShader::ShaderGenerator * shadergen =
-		RTShader::ShaderGenerator::getSingletonPtr();
-	shadergen->addSceneManager(scene);
+  // get a pointer to the already created root
+  Ogre::Root *root = getRoot();
+  Ogre::SceneManager *scnMgr = root->createSceneManager();
 
-	SceneNode * root_node = scene->getRootSceneNode();
+  // register our scene with the RTSS
+  Ogre::RTShader::ShaderGenerator *shadergen =
+      Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+  shadergen->addSceneManager(scnMgr);
 
-	// without light we would just get a black screen
-	Light * light = scene->createLight("MainLight");
-	SceneNode * light_node = root_node->createChildSceneNode();
-	light_node->setPosition(20, 80, 50);
-	light_node->attachObject(light);
+  // without light we would just get a black screen
+  Ogre::Light *light = scnMgr->createLight("MainLight");
+  Ogre::SceneNode *lightNode =
+      scnMgr->getRootSceneNode()->createChildSceneNode();
 
-	// create camera so we can observe scene
-	Camera * camera = scene->createCamera("MainCamera");
-	camera->setNearClipDistance(5);  // specific to this sample
-	camera->setAutoAspectRatio(true);
-	SceneNode * camera_node = root_node->createChildSceneNode();
-	camera_node->setPosition(0, 0, 140);
-	camera_node->lookAt(Vector3{0, 0, -1}, Node::TS_PARENT);
-	camera_node->attachObject(camera);
+  // Set light position
+  lightNode->setPosition(0, 10, 15);
+  lightNode->attachObject(light);
 
-	getRenderWindow()->addViewport(camera);  // render into the main window
+  // also need to tell where we are
+  Ogre::SceneNode *camNode = scnMgr->getRootSceneNode()->createChildSceneNode();
+  camNode->setPosition(0, 0, 15);
+  camNode->lookAt(Ogre::Vector3(0, 0, -1), Ogre::Node::TS_PARENT);
 
-	// finally something to render
-	Entity * ent = scene->createEntity("ogrehead.mesh");
-	SceneNode * node = root_node->createChildSceneNode();
-	node->attachObject(ent);
+  // create the camera
+  Ogre::Camera *cam = scnMgr->createCamera("myCam");
+  cam->setNearClipDistance(5); // specific to this sample
+  cam->setAutoAspectRatio(true);
+  camNode->attachObject(cam);
+
+  // and tell it to render into the main window
+  getRenderWindow()->addViewport(cam);
+
+  // finally something to render
+  Ogre::Entity *ent = scnMgr->createEntity("Sinbad.mesh");
+  Ogre::SceneNode *node = scnMgr->getRootSceneNode()->createChildSceneNode();
+  node->attachObject(ent);
 }
