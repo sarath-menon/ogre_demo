@@ -6,20 +6,18 @@
 using namespace Ogre;
 
 // ApplicationContext, -> Use inbuild simple gui system
-// Inputlistener -> Handle inputs 
+// Inputlistener -> Handle inputs
 
-class MyTestApp
-	: public OgreBites::ApplicationContext, public OgreBites::InputListener
-{
+class MyTestApp : public OgreBites::ApplicationContext,
+                  public OgreBites::InputListener {
 public:
-	MyTestApp();
-	~MyTestApp() {}
+  MyTestApp();
+  ~MyTestApp() {}
 
-	void setup_lighting(SceneManager *scene, SceneNode *root_node);
-	void setup_camera(SceneManager *scene, SceneNode *root_node);
+  SceneManager* setup_scene();
+  void setup_lighting(SceneManager *scene, SceneNode *root_node);
+  void setup_camera(SceneManager *scene, SceneNode *root_node);
 
-	void setup() override;
-	bool keyPressed(OgreBites::KeyboardEvent const & evt) override;
-
-	
+  void setup() override;
+  bool keyPressed(OgreBites::KeyboardEvent const &evt) override;
 };

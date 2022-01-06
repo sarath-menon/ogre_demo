@@ -9,6 +9,7 @@ enable_testing()
 add_executable(ogre_demo 
 src/main.cpp
 src/ogre_demo.cpp
+src/scene.cpp
 src/lighting.cpp
 src/camera.cpp
 )
