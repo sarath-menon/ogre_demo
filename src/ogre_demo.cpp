@@ -26,20 +26,10 @@ void MyTestApp::setup() {
 
   SceneNode *root_node = scene->getRootSceneNode();
 
-  // without light we would just get a black screen
-  Light *light = scene->createLight("MainLight");
-  SceneNode *light_node = root_node->createChildSceneNode();
-  light_node->setPosition(20, 80, 50);
-  light_node->attachObject(light);
+  auto light = this->setup_lighting(scene,root_node );
 
-  // create camera so we can observe scene
-  Camera *camera = scene->createCamera("MainCamera");
-  camera->setNearClipDistance(5); // specific to this sample
-  camera->setAutoAspectRatio(true);
-  SceneNode *camera_node = root_node->createChildSceneNode();
-  camera_node->setPosition(0, 0, 250);
-  camera_node->lookAt(Vector3{0, 0, -1}, Node::TS_PARENT);
-  camera_node->attachObject(camera);
+  auto camera = this->setup_camera(scene,root_node);
+
 
   getRenderWindow()->addViewport(camera); // render into the main window
 

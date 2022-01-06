@@ -14,6 +14,12 @@ class MyTestApp
 public:
 	MyTestApp();
 	~MyTestApp() {}
+
+	Light* setup_lighting(SceneManager *scene, SceneNode *root_node);
+	Camera* setup_camera(SceneManager *scene, SceneNode *root_node);
+
 	void setup() override;
 	bool keyPressed(OgreBites::KeyboardEvent const & evt) override;
+
+	
 };
