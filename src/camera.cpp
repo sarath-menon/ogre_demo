@@ -1,8 +1,8 @@
 #include "ogre_demo.h"
 
-Camera* MyTestApp::setup_camera(SceneManager *scene, SceneNode *root_node){
+void MyTestApp::setup_camera(SceneManager *scene, SceneNode *root_node) {
 
-   // create camera so we can observe scene
+  // create camera so we can observe scene
   Camera *camera = scene->createCamera("MainCamera");
   camera->setNearClipDistance(5); // specific to this sample
   camera->setAutoAspectRatio(true);
@@ -12,6 +12,6 @@ Camera* MyTestApp::setup_camera(SceneManager *scene, SceneNode *root_node){
   camera_node->lookAt(Vector3{0, 0, -1}, Node::TS_PARENT);
   camera_node->attachObject(camera);
 
-  return camera;
-
+  // render into the main window
+  getRenderWindow()->addViewport(camera);
 }

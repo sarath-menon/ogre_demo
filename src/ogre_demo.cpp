@@ -26,12 +26,9 @@ void MyTestApp::setup() {
 
   SceneNode *root_node = scene->getRootSceneNode();
 
-  auto light = this->setup_lighting(scene,root_node );
+  this->setup_lighting(scene, root_node);
 
-  auto camera = this->setup_camera(scene,root_node);
-
-
-  getRenderWindow()->addViewport(camera); // render into the main window
+  this->setup_camera(scene, root_node);
 
   // Create entities [ogre keeps only one copy of mesh in memory, so two objects
   // of same mesh ok]
