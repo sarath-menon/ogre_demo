@@ -24,9 +24,13 @@ void MyTestApp::setup() {
 
   this->setup_camera(scene, root_node);
 
+  // create ground
+  this->create_ground(scene);
+
   // Create entities [ogre keeps only one copy of mesh in memory, so two objects
   // of same mesh ok]
   Entity *ninjaEntity = scene->createEntity("ogrehead.mesh");
+
   // enable shadows
   ninjaEntity->setCastShadows(true);
 
@@ -34,8 +38,4 @@ void MyTestApp::setup() {
   SceneNode *node_2 = root_node->createChildSceneNode(Vector3(0, 0, 0));
   node_2->attachObject(ninjaEntity);
   node_2->roll(Degree(45));
-
-  // create ground
-  this->create_ground(scene);
-  
 }
