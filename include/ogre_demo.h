@@ -17,6 +17,7 @@ public:
   SceneManager* setup_scene();
   void setup_lighting(SceneManager *scene, SceneNode *root_node);
   void setup_camera(SceneManager *scene, SceneNode *root_node);
+  void create_ground(SceneManager *scene);
 
   void setup() override;
   bool keyPressed(OgreBites::KeyboardEvent const &evt) override;

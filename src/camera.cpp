@@ -13,5 +13,10 @@ void MyTestApp::setup_camera(SceneManager *scene, SceneNode *root_node) {
   camera_node->attachObject(camera);
 
   // render into the main window
-  getRenderWindow()->addViewport(camera);
+  Viewport* vp  = getRenderWindow()->addViewport(camera);
+  vp->setBackgroundColour(ColourValue(0, 0, 0));
+
+  // set aspect ratio according to viewport size
+  camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+  
 }

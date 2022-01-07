@@ -26,13 +26,16 @@ void MyTestApp::setup() {
 
   // Create entities [ogre keeps only one copy of mesh in memory, so two objects
   // of same mesh ok]
-  Entity *obj_1 = scene->createEntity("ogrehead.mesh");
-  Entity *obj_2 = scene->createEntity("ogrehead.mesh");
+  Entity *ninjaEntity = scene->createEntity("ogrehead.mesh");
+  // enable shadows
+  ninjaEntity->setCastShadows(true);
 
   // Attace entities to scene
-  SceneNode *node_1 = root_node->createChildSceneNode();
-  SceneNode *node_2 = root_node->createChildSceneNode(Vector3(84, 48, 0));
+  SceneNode *node_2 = root_node->createChildSceneNode(Vector3(0, 0, 0));
+  node_2->attachObject(ninjaEntity);
+  node_2->roll(Degree(45));
 
-  node_1->attachObject(obj_1);
-  node_2->attachObject(obj_2);
+  // create ground
+  this->create_ground(scene);
+  
 }
