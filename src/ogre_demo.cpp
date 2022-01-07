@@ -20,6 +20,11 @@ void MyTestApp::setup() {
 
   SceneNode *root_node = scene->getRootSceneNode();
 
+  // add paths
+  this->addResourceDirectory(resources_path + "/material/checkerboard");
+  this->loadMaterialFile("checkerboard.material");
+  
+
   this->setup_lighting(scene, root_node);
 
   this->setup_camera(scene, root_node);

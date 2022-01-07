@@ -13,6 +13,7 @@ src/scene.cpp
 src/lighting.cpp
 src/camera.cpp
 src/ground.cpp
+src/utilities.cpp
 )
 
 target_include_directories(ogre_demo PUBLIC include)
